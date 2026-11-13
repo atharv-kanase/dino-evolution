@@ -1,6 +1,6 @@
 import { SKINS } from '../config.js';
 const KEY = 'dino-evolution-v1';
-const defaults = () => ({ best: 0, dna: 0, runs: 0, skin: 0, sound: false, wallet: 0, ownedSkins: [0], resume: null, storeVersion: 2 });
+const defaults = () => ({ best: 0, dna: 0, runs: 0, skin: 0, sound: false, wallet: 0, ownedSkins: [0], resume: null, storeVersion: 2, firstRunBountyClaimed: false });
 let cached=null, database=null;
 function normalize(raw) {
     if (!raw || typeof raw !== 'object' || Array.isArray(raw)) return null;
@@ -23,6 +23,7 @@ function normalize(raw) {
     }
     if (data.ownedSkins.includes(raw.skin)) data.skin = raw.skin;
     data.sound = raw.sound === true;
+    data.firstRunBountyClaimed=raw.firstRunBountyClaimed===true;
     data.lastCrash=Number.isFinite(raw.lastCrash)&&raw.lastCrash>=0?raw.lastCrash:null;
     data.pendingComeback=raw.pendingComeback===true;
     data.savedAt=Number.isFinite(raw.savedAt)?raw.savedAt:0;

@@ -30,6 +30,10 @@ Space/Up: jump. Down: slide. Escape: pause. When the large green EVOLUTION READY
 banner appears, press E or tap it to choose a power. X uses an unlocked dash.
 C activates a Comeback Charge near your previous crash point.
 
+Your first completed run awards a one-time 300 DNA bounty, saved in this browser.
+Open the Store from the reward to buy a skin. Existing testers receive it after
+their next completed run if they have not claimed it yet.
+
 The store has a Preview, Select/Buy & Select, Done flow. Progress saves in the
 same browser and local URL. Continue resumes an interrupted run. Switching
 browsers, devices or hostnames starts a separate save.

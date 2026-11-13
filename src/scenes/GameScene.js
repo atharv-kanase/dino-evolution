@@ -9,6 +9,7 @@ import { UI } from '../ui.js';
 import { mapIndexForDistance, WorldSystem } from '../systems/WorldSystem.js';
 import { POWER_DURATION, expiredPowers } from '../systems/powers.js';
 import { drawAbilityEffects } from '../effects.js';
+import { awardFirstRunBounty } from '../systems/bounty.js';
 import { inComebackWindow, COMEBACK_DURATION, COMEBACK_AFTER } from '../systems/comeback.js';
 import { speedAtDistance } from '../systems/difficulty.js';
 import { pickupClear } from '../systems/pickupPlacement.js';
@@ -298,6 +299,7 @@ export class GameScene extends Phaser.Scene {
     const previousBest = this.bestAtRunStart??this.save.best;
     this.save.best = Math.max(previousBest, Math.floor(this.run.distance));
     this.save.resume=null;this.save.runs++;
+    this.run.bountyAwarded=awardFirstRunBounty(this.save);
     this.persist(); this.ui.gameOver(previousBest);
   }
   burst(x, y, tint, count) {
