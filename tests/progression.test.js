@@ -8,7 +8,7 @@ test('respawns do not share temporary upgrades', () => {
 });
 test('choices exclude owned mutations and contain no duplicates', () => {
   const choices = upgradeChoices(['double'], () => 0.5);
-  assert.equal(choices.length, 3); assert.equal(new Set(choices.map(u => u.id)).size, 3);
+  assert.equal(choices.length, 2); assert.equal(new Set(choices.map(u => u.id)).size, 2);
   assert.ok(choices.every(u => u.id !== 'double'));
   assert.deepEqual(upgradeChoices(['double','armour','magnet','spring','dash','phoenix']), []);
 });

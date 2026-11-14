@@ -1,10 +1,7 @@
 export const UPGRADES = [
-  { id: 'dash', name: 'Electric Dash', icon: 'ϟ', rarity: 'RARE', description: 'For 16 seconds, X bursts through hazards. Six-second recharge between bursts.', benefit: '16s power · X / DASH' },
-  { id: 'phoenix', name: 'Phoenix Heart', icon: '♨', rarity: 'EPIC', description: 'For 22 seconds, your next fatal hit becomes a fiery revival. Consumed on use.', benefit: '22s window · one revival' },
-  { id: 'armour', name: 'Armoured Skin', icon: '◈', rarity: 'RARE', description: 'A translucent shield absorbs one collision. Expires in 20 seconds; cannot save a fall.', benefit: '20s window · one protective shell' },
-  { id: 'double', name: 'Double Jump', icon: '↑↑', rarity: 'RARE', description: 'For 18 seconds, jump once more in midair. A ripple marks your second leap.', benefit: '18s power · one airborne jump' },
-  { id: 'magnet', name: 'Magnetic DNA', icon: '◎', rarity: 'COMMON', description: 'For 16 seconds, nearby DNA streams toward you. Follow the soft magnetic pulse.', benefit: '16s power · 180px attraction' },
-  { id: 'spring', name: 'Spring Legs', icon: '↟', rarity: 'COMMON', description: 'For 18 seconds, leap higher. Hold to soar; release for a short hop.', benefit: '18s power · +15% jump strength' },
+  {id:'double',name:'Pterodactyl Wings',icon:'↑↑',rarity:'RARE',description:'Jump twice. Hold Space while falling to glide.',benefit:'18s · double jump + glide'},
+  {id:'armour',name:'Bone Armour',icon:'◈',rarity:'RARE',description:'Spiked plates and a tail club. Smash one obstacle; cannot save a fall.',benefit:'20s · one shield hit'},
+  {id:'dash',name:'Cyber Legs',icon:'ϟ',rarity:'RARE',description:'Jump, then Shift / Right / X to phase through hazards for 0.3s. Six-second recharge.',benefit:'16s · mid-air dash'},
 ];
 export function nextLevelXP(level) { return Math.min(65, 25 + (level - 1) * 10); }
 export function upgradeChoices(owned, random = Math.random) {

@@ -24,10 +24,16 @@ npm run dev
 Open the localhost address printed in the terminal. The first dependency install
 needs internet access. Afterwards, the game uses only bundled local assets.
 
+## Team learning and pitching
+
+Read TEAM-GUIDE.md for the game concept, technology, code walkthrough, an honest
+pitch, evaluator questions, assistance disclosure and a four-person learning plan.
+
 ## Controls
 
-Space/Up: jump. Down: slide. Escape: pause. When the large green EVOLUTION READY
-banner appears, press E or tap it to choose a power. X uses an unlocked dash.
+Space/Up: jump. Down: slide. Escape: pause. After a crash, press Respawn
+and choose Wings, Bone Armour or Cyber Legs for the next attempt.
+Wings: double jump and hold Space to glide. Cyber Legs: jump then Shift/Right/X.
 C activates a Comeback Charge near your previous crash point.
 
 Your first completed run awards a one-time 300 DNA bounty, saved in this browser.
