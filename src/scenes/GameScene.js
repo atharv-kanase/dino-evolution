@@ -91,6 +91,7 @@ export class GameScene extends Phaser.Scene {
       });
       const release = () => { if (button.dataset.control === 'jump') this.touchJump = false; else this.touchSlide = false; };
       button.addEventListener('pointerup', release); button.addEventListener('pointercancel', release);
+      button.addEventListener('lostpointercapture',release);
     });
     this.game.events.on('blur', () => { if (this.state === 'running') this.togglePause(); });
     this.ui = new UI(this);
@@ -106,6 +107,7 @@ export class GameScene extends Phaser.Scene {
     this.saveWarning=document.createElement('div');this.saveWarning.id='save-warning';
     this.saveWarning.hidden=true;this.saveWarning.textContent='Browser saving is unavailable. Keep this tab open to retain progress.';
     document.querySelector('#stage').append(this.saveWarning);
+    window.dispatchEvent(new Event('resize'));
   }
   persist() {
     const ok=writeSave(this.save);

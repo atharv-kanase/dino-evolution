@@ -1,10 +1,13 @@
 /* Standalone and itch.io: the document is the game, with no outer site chrome. */
+button { touch-action:manipulation; }
+#game canvas { touch-action:none; }
 html,body { width:100%; height:100%; margin:0; overflow:hidden; background:#0b151d; }
 #app { width:100%; height:100%; max-width:none; margin:0; padding:0; }
 #stage {
   position:relative; width:100%; height:100dvh; aspect-ratio:auto;
   border:0; border-radius:0; box-shadow:none; background:#0b151d;
 }
+
 #game,#stage.screen-expanded #game,#stage:fullscreen #game { inset:0; }
 #game-tools {
   position:absolute; z-index:4; top:max(12px,env(safe-area-inset-top));
@@ -37,4 +40,41 @@ html,body { width:100%; height:100%; margin:0; overflow:hidden; background:#0b15
   .store-heading h3 { font-size:22px; }
   .store { padding:14px 18px; }
   .store .skin { min-height:103px; }
+}
+
+/* Phone menus scroll independently; controls stay clear of browser safe areas. */
+@media (pointer:coarse), (max-width:600px) {
+  #touch { display:flex; bottom:max(12px,env(safe-area-inset-bottom));left:max(12px,env(safe-area-inset-left));right:max(12px,env(safe-area-inset-right));gap:10px; }
+  #touch button { min-height:58px;min-width:86px;padding:16px;font-size:14px;border-width:2px; }
+  #stage:has(#overlay.visible) #touch { display:none; }
+  #comeback { bottom:calc(85px + env(safe-area-inset-bottom));max-width:94%;white-space:normal;text-align:center; }
+  #overlay { padding:55px 0 max(14px,env(safe-area-inset-bottom));overscroll-behavior:contain; }
+  #overlay.visible { align-items:flex-start; }
+  .dialog { flex-shrink:0;max-height:calc(100dvh - 80px); }
+  .store { height:calc(100dvh - 80px);max-height:calc(100dvh - 80px); }
+  .menu-panel { margin:auto; }
+}
+@media(max-width:600px) and (orientation:portrait) {
+  .menu-panel { display:flex;flex-direction:column;max-width:none;width:88%;padding:12px 0;gap:9px; }
+  .menu-panel h2 { font-size:clamp(40px,12vw,60px);margin:8px 0; }
+  .menu-panel .menu-actions { display:flex;flex-direction:column;gap:10px; }
+  .menu-panel .menu-links { display:grid;grid-template-columns:1fr 1fr; }
+  .specimen { display:none; }
+  .quick-evolution { padding:12px;width:94%;max-height:calc(100dvh - 90px);overflow-y:auto; }
+  .quick-evolution .cards { display:grid;grid-template-columns:1fr; }
+  .quick-heading { flex-wrap:wrap;gap:8px; }
+  .quick-evolution .upgrade { min-height:76px; }
+  #evolve { top:55px;left:10px;right:10px;min-width:0;min-height:52px;padding:7px; }
+  .evolution-key { width:32px;height:32px;font-size:19px; }
+  .evolution-label small { font-size:11px; }
+  #touch button[data-control=jump] { flex:1;max-width:46%;background:#315447ee; }
+}
+@media(max-height:500px) and (pointer:coarse) {
+  #game-tools { top:5px; }
+  #touch button { min-height:48px;padding:10px 18px;font-size:12px; }
+  #evolve { top:103px;right:12px;left:auto;min-width:0;min-height:46px;padding:6px 9px;gap:7px; }
+  .evolution-key { width:28px;height:28px;font-size:17px; }
+  .evolution-label b { font-size:11px; }
+  .evolution-label small { font-size:10px; }
+  .dialog { padding:14px; }
 }

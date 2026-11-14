@@ -16,6 +16,23 @@ const game = new Phaser.Game({
   scene: [GameScene],
 });
 
+// Give phones a closer view instead of shrinking the entire desktop world.
+function fitPhoneView(){
+  const portrait=window.innerWidth<=600 && window.innerHeight>window.innerWidth;
+  const width=portrait?600:WIDTH;
+  game.scale.setGameSize(width,HEIGHT);
+  const scene=game.scene.getScene('Game');
+  if(scene?.label){
+    scene.label.setX(width-22);scene.pauseButton.setX(width-22);
+    scene.ability.setX(width-22);scene.tip.setX(width/2);
+    scene.tip.setStyle({fontSize:portrait?'11px':'13px',wordWrap:{width:width-40}});
+  }
+  game.scale.refresh();
+}
+game.events.once('ready',()=>setTimeout(fitPhoneView,0));
+window.addEventListener('resize',fitPhoneView);
+setTimeout(fitPhoneView,300);
+
 const stage=document.querySelector('#stage');
 const screenButton=document.querySelector('#screen-toggle');
 let nativeFullscreen=false;
