@@ -1,6 +1,6 @@
 /* Standalone and itch.io: the document is the game, with no outer site chrome. */
 button { touch-action:manipulation; }
-.skin-preview[src*="motu-original"] { image-rendering:auto;object-fit:contain; }
+.skin-preview[src*="motu-"] { image-rendering:auto;object-fit:contain; }
 #game canvas { touch-action:none; }
 html,body { width:100%; height:100%; margin:0; overflow:hidden; background:#0b151d; }
 #app { width:100%; height:100%; max-width:none; margin:0; padding:0; }

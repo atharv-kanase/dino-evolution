@@ -42,7 +42,7 @@ export class Dino extends Phaser.Physics.Arcade.Sprite {
     if(this.characterArt==='motu'){
       // Render the unmodified full-resolution upload, without redrawing its face.
       this.setTexture('motu-original');
-      const scale=base*(this.sliding?.65:1)*74/this.width;
+      const scale=base*(this.sliding?.65:1)*108/this.width;
       this.setScale(scale);
       const w=(this.sliding?48:32)/scale,h=(this.sliding?24:47)/scale;
       this.body.setSize(w,h,false);

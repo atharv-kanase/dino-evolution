@@ -17,7 +17,7 @@ import { pickupClear } from '../systems/pickupPlacement.js';
 export class GameScene extends Phaser.Scene {
   constructor() { super('Game'); }
   preload() {
-    this.load.image('motu-original',`${import.meta.env.BASE_URL}skins/motu-original.png`);
+    this.load.image('motu-original',`${import.meta.env.BASE_URL}skins/motu-transparent.png`);
     for(const id of ['desert','jungle','volcano','tundra','ruins']) this.load.image(`${id}-map`, `${import.meta.env.BASE_URL}maps/${id}.png`);
   }
   create() {
