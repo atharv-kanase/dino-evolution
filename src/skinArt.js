@@ -2,7 +2,7 @@
 // All characters fit the same 74x60 frame and use identical gameplay hitboxes.
 export function makeSkinTextures(scene) {
   const g=scene.make.graphics({x:0,y:0},false);
-  for(const kind of ['bubblegum','charmender','cyber','gandhiji','modiji','trump','habibi','camel','golden']) {
+  for(const kind of ['bubblegum','charmender','cyber','gandhiji','modiji','trump','habibi','camel','golden','motu']) {
     for(const pose of [...Array.from({length:8},(_,i)=>`run${i}`),'jump','slide']) {
       g.clear();drawCharacter(g,kind,pose);
       g.generateTexture(`${kind}-${pose}`,74,60);
@@ -11,6 +11,7 @@ export function makeSkinTextures(scene) {
   g.destroy();
 }
 function drawCharacter(p,kind,pose) {
+  if(kind==='motu'){drawMotuDino(p,pose);return;}
   if(['habibi','camel','golden'].includes(kind)){drawDesertRoyalDino(p,kind,pose);return;}
   if(['gandhiji','modiji','trump'].includes(kind)){drawPortraitDino(p,kind,pose);return;}
   const bubble=kind==='bubblegum',cyber=kind==='cyber',slide=pose==='slide';
@@ -68,6 +69,47 @@ function drawCharacter(p,kind,pose) {
     p.fillStyle(cyber?0xa5fff3:0xfff096);p.fillEllipse(7,fy+1,5,9);
     p.fillStyle(cyber?0x50fff6:0xffd543);p.fillRect(3,fy-15-flame,3,3);
   }
+}
+
+// Reference-inspired royal look, drawn in the same small animated game frames.
+function drawMotuDino(p,pose){
+  const slide=pose==='slide',running=pose.startsWith('run');
+  const f=running?Number(pose.slice(3)):0,stride=running?Math.sin(f*Math.PI/4):0;
+  const bob=running?Math.round(Math.sin(f*Math.PI/2)):0;
+  const y=(slide?17:0)+bob;
+  const rect=(color,x,y,w,h,r=0)=>{p.fillStyle(color);r?p.fillRoundedRect(x,y,w,h,r):p.fillRect(x,y,w,h);};
+  p.lineStyle(10,0x63391e);p.lineBetween(28,41,7,29+(slide?9:0));
+  p.lineStyle(6,0xffce43);p.lineBetween(28,40,7,29+(slide?9:0));
+  // Gold legs alternate in eight frames, including an airborne tucked pose.
+  for(const [x,phase] of [[30,stride],[48,-stride]]){
+    const lift=pose==='jump'?4:Math.max(0,phase)*4;
+    rect(0x63391e,x+phase*3,44,11,16-lift,3);rect(0xffc846,x+phase*3+2,45,7,12-lift,2);
+    rect(0xfff0a3,x+phase*3+1,57-lift,11,3,1);
+  }
+  rect(0x63391e,23,31+(slide?7:0),35,20,8);
+  rect(0xf6e9df,25,32+(slide?7:0),31,16,7);
+  rect(0xd7bcb6,29,44+(slide?3:0),25,3,2);
+  // Long brown hair wraps the face and shoulders, with lighter strands.
+  rect(0x3c2420,28,7+y,36,35-(slide?7:0),9);
+  rect(0x6a3d2d,30,8+y,32,32-(slide?7:0),8);
+  rect(0x8d5338,31,14+y,4,24-(slide?7:0),2);
+  rect(0x4b2b23,29,22+y,7,22-(slide?8:0),3);
+  rect(0x4b2b23,58,18+y,7,26-(slide?8:0),3);
+  rect(0xe5a16e,37,15+y,23,22,7);rect(0xffc18c,39,16+y,20,18,6);
+  rect(0x4b2b23,35,10+y,23,7,3);rect(0x8c5238,36,11+y,13,3,1);
+  rect(0x392823,43,21+y,4,3,1);rect(0x392823,54,21+y,4,3,1);
+  rect(0xffffff,44,21+y,1,1);rect(0xffffff,55,21+y,1,1);
+  p.lineStyle(1,0x613c2d);p.lineBetween(42,19+y,47,20+y);p.lineBetween(53,20+y,58,19+y);
+  rect(0xbc7265,49,30+y,6,2,1);
+  // White shirt and gold hands; tiny lettering stays readable as a shirt motif.
+  rect(0xffc846,25,36+(slide?4:0),7,7,2);rect(0xffd65b,54,36+(slide?4:0),7,7,2);
+  rect(0x9d9c96,37,38+(slide?4:0),13,1);rect(0x9d9c96,36,41+(slide?4:0),15,1);
+  // Ruby crown, integrated into the hair silhouette rather than a power effect.
+  rect(0x96511f,34,6+y,27,5,1);rect(0xffd442,35,6+y,25,4,1);
+  p.fillStyle(0xf4b72d);p.fillPoints([{x:35,y:7+y},{x:33,y:0+y},{x:41,y:4+y},{x:47,y:0+y},{x:52,y:4+y},{x:60,y:0+y},{x:59,y:7+y}],true);
+  rect(0xffef99,36,7+y,22,1);rect(0xe33341,45,3+y,4,4,1);
+  rect(0xe33341,37,4+y,2,2);rect(0xe33341,55,4+y,2,2);
+  p.lineStyle(1,0xffeb8c,.9);p.lineBetween(16,16+y,16,22+y);p.lineBetween(13,19+y,19,19+y);
 }
 
 function drawDesertRoyalDino(p,kind,pose) {
