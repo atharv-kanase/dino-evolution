@@ -39,6 +39,16 @@ export class Dino extends Phaser.Physics.Arcade.Sprite {
     const base=1+Math.min(this.evolution,6)*.055;
     const age=elapsed-(this.landedAt??-1);
     const squash=grounded&&age<.18?Math.sin(age/.18*Math.PI)*.08:0;
+    if(this.characterArt==='motu'){
+      // Render the unmodified full-resolution upload, without redrawing its face.
+      this.setTexture('motu-original');
+      const scale=base*(this.sliding?.65:1)*74/this.width;
+      this.setScale(scale);
+      const w=(this.sliding?48:32)/scale,h=(this.sliding?24:47)/scale;
+      this.body.setSize(w,h,false);
+      this.body.setOffset((this.width-w)/2,this.height-h);
+      return;
+    }
     this.setScale(base*(1+squash*.5),base*(1-squash));
     const frame=Math.floor(elapsed/.065)%8;
     this.setTexture(this.characterArt?`${this.characterArt}-${this.sliding?'slide':!grounded?'jump':'run'+frame}`:this.sliding?'slide':!grounded?'dinoJump':`dino${frame}`);

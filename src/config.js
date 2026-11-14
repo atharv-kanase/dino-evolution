@@ -23,7 +23,7 @@ export const SKINS = [
   { name: 'Habibi Dino', color: 0xffffff, price: 350, art: 'habibi' },
   { name: 'Camel', color: 0xffffff, price: 200, art: 'camel' },
   { name: 'Golden Dino', color: 0xffffff, price: 500, art: 'golden' },
-  { name: 'Legendary Motu Dino', color: 0xffffff, price: 250, art: 'motu' },
+  { name: 'Legendary Motu Dino', color: 0xffffff, price: 250, art: 'motu', image: 'skins/motu-original.png' },
 ];
 // Display order is independent of permanent save IDs. Camel sits by Cyber Dino.
 export const SKIN_STORE_ORDER = [0,1,2,3,5,6,7,12,8,9,10,11,13,14];

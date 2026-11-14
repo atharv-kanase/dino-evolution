@@ -25,6 +25,7 @@ export class UI {
     this.on('back', () => this.menu());
   }
   skinPreview(skin) {
+    if(skin.image)return `${import.meta.env.BASE_URL}${skin.image}`;
     const color=skin.color,key=skin.art||color;
     this.previews??={};
     if(this.previews[key])return this.previews[key];
