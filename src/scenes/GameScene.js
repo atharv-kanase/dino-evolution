@@ -61,7 +61,7 @@ export class GameScene extends Phaser.Scene {
       if(this.elapsed < this.comebackUntil) {
         this.burst(obstacle.x, obstacle.y - 20, 0xffd98b, 10);
         obstacle.destroy();
-      } else this.hit(false, obstacle);
+      } else this.hit();
     });
     this.physics.add.overlap(this.dino, this.collectibles, (_, dna) => this.collect(dna));
     this.hud = this.add.text(30, 25, '', { fontFamily: 'monospace', fontSize: '15px', color: '#e8e5d9', lineSpacing: 7 }).setDepth(20);
@@ -75,8 +75,6 @@ export class GameScene extends Phaser.Scene {
     this.input.keyboard.on('keydown-E',()=>this.openEvolution());
     this.input.keyboard.on('keydown-C', () => this.activateComeback());
     this.input.keyboard.on('keydown-X', () => this.activateDash());
-    this.input.keyboard.on('keydown-SHIFT', () => this.activateDash());
-    this.input.keyboard.on('keydown-RIGHT', () => this.activateDash());
     this.input.keyboard.on('keydown-ESC', () => this.togglePause());
     this.input.keyboard.on('keydown', event => {
       if (this.state === 'evolving') {
@@ -179,20 +177,28 @@ export class GameScene extends Phaser.Scene {
   resumeRun() { this.state = 'running'; this.physics.resume(); this.ui.hide(); this.jumpRequested = false; this.touchJump = false; this.touchSlide = false; }
   addXP(amount) { this.run.xp += amount; }
   chooseUpgrade(id) {
-    if(this.state!=='evolving'||!this.choices.some(u=>u.id===id))return;
-    this.startRun();
-    this.run.upgrades=[id];this.run.history=[id];
-    this.powerExpiries[id]=POWER_DURATION[id];this.armour=id==='armour';
-    this.dino.evolve(1);this.audio.play('evolve');
-    this.burst(this.dino.x,this.dino.y-25,0xd9f28b,28);this.checkpoint();
+    if (this.state !== 'evolving' || !this.choices.some(u => u.id === id)) return;
+    for(const active of [...this.run.upgrades])this.removePower(active);
+    this.pendingEvolution=false;this.nextEvolutionAt=this.elapsed+26;
+    this.run.upgrades.push(id); this.run.history.push(id);
+    this.powerExpiries[id]=this.elapsed+POWER_DURATION[id];
+    if (id === 'armour') this.armour = true;
+    if (id === 'phoenix') this.phoenix = true;
+    this.dino.evolve(this.run.history.length);
+    this.dino.invincibleUntil = this.elapsed + 1;
+    this.audio.play('evolve'); this.burst(this.dino.x, this.dino.y - 25, 0xd9f28b, 28);
+    this.resumeRun();
   }
-  evolutionReady() { return false; }
+  evolutionReady() {
+    return this.pendingEvolution && this.run.upgrades.length===0 && this.elapsed>=this.nextEvolutionAt;
+  }
   openEvolution() {
-    if(this.state!=='over')return;
-    this.choices=upgradeChoices([]);this.state='evolving';
-    this.physics.pause();this.ui.upgrades(this.choices);
+    if(this.state!=='running'||!this.evolutionReady())return;
+    this.choices=upgradeChoices([]);this.state='evolving';this.physics.pause();this.ui.upgrades(this.choices);
   }
-  skipEvolution() { if(this.state==='evolving')this.startRun(); }
+  skipEvolution() {
+    this.pendingEvolution=false;this.nextEvolutionAt=this.elapsed+12;this.resumeRun();
+  }
   spawnObstacle(forcedType, x = WIDTH + 80) {
     const type=forcedType||Phaser.Utils.Array.GetRandom(this.world.map.hazards);
     if(type==='gap') {
@@ -264,12 +270,10 @@ export class GameScene extends Phaser.Scene {
     this.burst(dna.x, dna.y, 0xd9f28b, 6); dna.destroy();
     this.run.dna++; this.addXP(3); this.audio.play('collect');this.checkpoint();
   }
-  hit(falling=false, obstacle=null) {
+  hit(falling=false) {
     if (this.state !== 'running' || (!falling && this.elapsed < this.dino.invincibleUntil)) return;
     if (this.armour && !falling) {
       this.removePower('armour'); this.dino.invincibleUntil = this.elapsed + 1.5;
-      if(obstacle?.active){this.burst(obstacle.x,obstacle.y-20,0xd6cbb3,26);obstacle.destroy();}
-      this.cameras.main.shake(120,.004);
       this.burst(this.dino.x, this.dino.y - 30, 0x8fc9ff, 20); this.audio.play('hit'); return;
     }
     if (this.phoenix) {
@@ -286,7 +290,7 @@ export class GameScene extends Phaser.Scene {
     this.state = 'dying'; this.physics.pause(); this.audio.play('hit');
     this.cameras.main.shake(170, 0.006); this.burst(this.dino.x, this.dino.y - 25, 0xd9f28b, 32);
     this.tweens.add({ targets: this.dino, angle: -35, alpha: 0.25, duration: 380 });
-    this.deathTimer = this.time.delayedCall(400, () => this.endRun());
+    this.deathTimer = this.time.delayedCall(650, () => this.endRun());
   }
   endRun() {
     if (this.banked) return;
@@ -303,8 +307,8 @@ export class GameScene extends Phaser.Scene {
     emitter.explode(count); this.time.delayedCall(650, () => emitter.destroy());
   }
   activateDash() {
-    if (this.state !== 'running' || !this.run.upgrades.includes('dash') || this.elapsed < this.dashReady || this.dino.body.blocked.down || this.dino.body.touching.down) return;
-    this.dashUntil = this.elapsed + 0.3; this.dashReady = this.elapsed + 6;
+    if (this.state !== 'running' || !this.run.upgrades.includes('dash') || this.elapsed < this.dashReady) return;
+    this.dashUntil = this.elapsed + 0.65; this.dashReady = this.elapsed + 6;
     this.dino.invincibleUntil = Math.max(this.dino.invincibleUntil, this.dashUntil);
     this.audio.play('evolve');
   }
@@ -355,7 +359,7 @@ export class GameScene extends Phaser.Scene {
     this.updateComebackUI();
     this.evolveButton.hidden=this.state!=='running'||!this.evolutionReady();
     this.ability.setVisible(this.state === 'running' && this.run.upgrades.includes('dash'));
-    this.ability.setText(this.elapsed >= this.dashReady ? 'SHIFT / → / X · AIR DASH' : `ÏŸ RECHARGING ${Math.ceil(this.dashReady - this.elapsed)}s`);
+    this.ability.setText(this.elapsed >= this.dashReady ? 'ÏŸ X / TAP TO DASH' : `ÏŸ RECHARGING ${Math.ceil(this.dashReady - this.elapsed)}s`);
     this.touchDashButton.style.display = this.state === 'running' && this.run.upgrades.includes('dash') ? 'block' : 'none';
     this.touchDashButton.textContent = this.elapsed >= this.dashReady ? 'ÏŸ DASH' : `ÏŸ ${Math.ceil(this.dashReady - this.elapsed)}s`;
     const target = this.comebackTarget ?? this.lastCrash;
@@ -379,7 +383,7 @@ export class GameScene extends Phaser.Scene {
       this.burst(this.dino.x, this.dino.y - 50, 0xd9f28b, 30); this.audio.play('evolve');
     }
     const powers=this.run.upgrades.map(id=>`${this.upgradeName(id)} ${Math.ceil(this.powerExpiries[id]-this.elapsed)}s`);
-    this.powerText.setVisible(true).setText(powers.length?'ACTIVE  /  '+powers.join('  Â·  '):'AFTER A CRASH: PICK A MUTATION FOR YOUR NEXT RUN');
+    this.powerText.setVisible(true).setText(powers.length?'ACTIVE  /  '+powers.join('  Â·  '):'COLLECT DNA TO DISCOVER A TEMPORARY POWER');
     const icons = { armour: this.armour ? 'â—ˆ' : 'â—‡', double: 'â†‘â†‘', magnet: 'â—Ž', spring: 'â†Ÿ', dash: 'ÏŸ', phoenix: this.phoenix ? 'â™¨' : 'Â·' };
     this.hud.setText(`${String(Math.floor(this.run.distance)).padStart(5, '0')} m   /   DNA ${this.run.dna}\nLV ${this.run.level}  Â·  PACE ${Math.round(this.speed/START_SPEED*100)}%  ${this.run.upgrades.map(u => icons[u]).join('  ')}`);
     this.xpFill.width = Math.min(190, this.run.xp / nextLevelXP(this.run.level) * 190);
@@ -392,7 +396,6 @@ export class GameScene extends Phaser.Scene {
     } else this.jumpBuffer -= dt; }
     const hold = this.keys.SPACE.isDown || this.keys.UP.isDown || this.touchJump;
     if (!hold && this.dino.body.velocity.y < -310 && this.elapsed >= this.comebackUntil) this.dino.setVelocityY(-310);
-    if(hold&&this.run.upgrades.includes('double')&&this.dino.body.velocity.y>150)this.dino.setVelocityY(150);
     this.dino.setAlpha(this.elapsed < this.dino.invincibleUntil ? (Math.floor(this.elapsed * 16) % 2 ? 0.4 : 1) : 1);
     this.nextSpawn -= dt;
     if (this.nextSpawn <= 0 && this.world.canSpawn()) { this.spawnObstacle(); this.nextSpawn = spawnInterval(this.speed); }
@@ -420,7 +423,7 @@ export class GameScene extends Phaser.Scene {
     if(this.dino.y>HEIGHT+55){this.hit(true);return;}
     if (this.run.xp >= nextLevelXP(this.run.level)) {
       const threshold = nextLevelXP(this.run.level); this.run.xp -= threshold; this.run.level++;
-      this.dino.evolve(Math.min(6,this.run.level-1));
+      this.pendingEvolution=true;
     }
   }
 }

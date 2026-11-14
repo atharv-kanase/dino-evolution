@@ -6,17 +6,11 @@ Read this together, then play and change one small thing yourselves. Understandi
 
 A single-player 2D endless runner. The dinosaur runs automatically. Jump over ground hazards, slide under flying hazards, collect DNA and survive longer as the pace increases. Six worlds introduce different scenery and hazards.
 
-**Bounce Back means failure changes your next attempt:** after a crash, Respawn opens three adaptation cards. Choose one and immediately restart with that temporary ability. A marker also remembers your last failure: near it, a Comeback Charge lets you launch through hazards with C. Pass your old limit to earn 5 DNA.
+**Bounce Back means failure helps your next attempt:** a marker remembers your last crash. Near it, a Comeback Charge lets you launch through hazards with C. Pass your old limit to earn 5 DNA. A new run starts without the old temporary powers.
 
-Current adaptations:
+During a run, levelling up makes an evolution available. Press E or tap the large Evolution Ready banner when convenient. Choose one short card; only one power can be active. Powers expire after 16–22 seconds of active play. Available powers are Electric Dash (X, six-second recharge), Phoenix Heart (one revival), Armoured Skin (one shield hit), Double Jump, Magnetic DNA and Spring Legs. Armour cannot rescue a fall. Double Jump does not include a glide, and dash uses X rather than Shift/Right Arrow.
 
-| Adaptation | What it does | Limit |
-| --- | --- | --- |
-| Pterodactyl Wings | Second jump in mid-air; hold Space while falling to glide | 18 seconds |
-| Bone Armour | Absorbs one obstacle hit and breaks that obstacle into particles | One hit or 20 seconds; cannot rescue a fall |
-| Cyber Legs | While airborne, Shift / Right Arrow / X activates a 0.3-second phase through obstacles | 16 seconds; six-second recharge |
-
-Only one adaptation is active. Timers count active play time, not paused time. You can also respawn without a power. Levelling up grows the dinosaur without opening cards during a run. Skins are cosmetic: buying one does not make collisions easier.
+The proposed post-crash draft, anatomical wings/plates/cyber legs, glide and revised dash have been reverted. Skins remain cosmetic and do not change collision difficulty.
 
 DNA is the currency for skins; XP increases your level during a run. Your first completed run awards a one-time 300 DNA testing bounty. This is not 300 DNA after every death.
 
@@ -99,21 +93,21 @@ Before the event, ask the organisers what AI use, outside help and work prepared
 
 ## 7. A short pitch to adapt honestly
 
-“DINO: EVOLUTION is a browser runner about bouncing back from failure. A crash gives us a choice of one temporary adaptation for the next attempt: wings, armour or cyber legs. A Comeback Charge helps us overcome our previous failure point. We collect DNA for cosmetic skins while the route becomes faster and changes worlds. We used JavaScript and Phaser, with AI and outside development help for the prototype. Our team's contributions were [replace with work you actually did]. We will demonstrate a crash, an adaptation and the next attempt.”
+“DINO: EVOLUTION is a browser runner about bouncing back from failure. We collect DNA, choose temporary powers when Evolution Ready appears, and try to survive longer. A Comeback Charge helps us overcome our previous failure point. DNA also buys cosmetic skins while the route becomes faster and changes worlds. We used JavaScript and Phaser, with AI and outside development help for the prototype. Our team's contributions were [replace with work you actually did]. We will demonstrate a power and the comeback action.”
 
 Do not claim the team wrote everything independently or add contributions you did not make. It is fine to say you are learning and show what you now understand.
 
 ## 8. Likely evaluator questions
 
-**How does it match Bounce Back?** A crash leads to a new adaptation and a charge near the old failure point. The player returns with a different strategy, rather than only resetting a score.
+**How does it match Bounce Back?** A crash earns a charge near the old failure point on the next attempt. The player returns with a different strategy, rather than only resetting a score.
 
-**What is innovative compared with the offline dinosaur game?** The crash-to-adaptation loop, temporary abilities, previous-failure marker and comeback action, plus multiple themed worlds and cosmetic progression. Endless running itself is an established genre.
+**What is innovative compared with the offline dinosaur game?** Temporary abilities, a previous-failure marker and comeback action, plus multiple themed worlds and cosmetic progression. Endless running itself is an established genre.
 
 **Why 2D and Phaser?** A small browser build is easy to share and learn. Phaser provides input, sprites and physics so effort can go into the gameplay loop.
 
 **How do you prevent unfair obstacles and coins?** Grounded hitboxes, bounded speed/spacing, gap sizing, and pickup clearance checks. Playtesting is still necessary; these checks do not prove every random sequence is perfect.
 
-**What happens after a crash?** The run ends, its DNA is kept, and Respawn opens the adaptation choice. Picking a card starts a fresh run with one timed power. The next run also gets a comeback opportunity near the recorded crash point.
+**What happens after a crash?** The run ends and its DNA is kept. Respawn starts a fresh attempt without the previous powers. A comeback opportunity appears near the recorded crash point. Powers are chosen during a run with E when Evolution Ready appears.
 
 **Can I keep buying a skin or claiming the bounty?** Purchases deduct currency once and unlock ownership. The bounty has a saved claimed flag, so completing another run does not grant it again in that browser save.
 
@@ -129,7 +123,7 @@ Do not claim the team wrote everything independently or add contributions you di
 
 ## 9. Demo and release checklist
 
-Play once, crash, show the 300 DNA bounty if this is a fresh browser save, and buy/equip a skin. Play again, crash, press Respawn and choose Wings. Demonstrate a second jump and holding Space while falling. On another attempt show Armour breaking one obstacle, or jump then Shift to demonstrate Cyber Legs. Point out the previous-failure marker and C charge. Refresh once to show that progress persists.
+Play once, crash, show the 300 DNA bounty if this is a fresh browser save, and buy/equip a skin. Respawn, collect DNA and survive until Evolution Ready appears. Press E and explain the three offered cards; choose one and demonstrate it. Point out the timer, previous-failure marker and C charge. Refresh once to show that progress persists.
 
 Avoid a long speech while running: pause with Escape when explaining. Use a separate browser profile for a fresh demonstration rather than clearing somebody's real progress.
 

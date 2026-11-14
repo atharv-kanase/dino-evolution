@@ -31,9 +31,8 @@ pitch, evaluator questions, assistance disclosure and a four-person learning pla
 
 ## Controls
 
-Space/Up: jump. Down: slide. Escape: pause. After a crash, press Respawn
-and choose Wings, Bone Armour or Cyber Legs for the next attempt.
-Wings: double jump and hold Space to glide. Cyber Legs: jump then Shift/Right/X.
+Space/Up: jump. Down: slide. Escape: pause. When the large green EVOLUTION READY
+banner appears, press E or tap it to choose a power. X uses an unlocked dash.
 C activates a Comeback Charge near your previous crash point.
 
 Your first completed run awards a one-time 300 DNA bounty, saved in this browser.
