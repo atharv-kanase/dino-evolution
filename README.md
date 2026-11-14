@@ -1,5 +1,11 @@
 # DINO: EVOLUTION
 
+## START HERE
+
+- **RUN-LOCALLY.md** — installation, launch commands and troubleshooting.
+- **PITCH-GUIDE.md** — ready-to-practise pitch, demo and evaluator questions.
+- **TEAM-GUIDE.md** — full explanation of gameplay, tech stack and code.
+
 A single-player browser runner about adapting and bouncing back. Built with
 JavaScript, Phaser 3 and Vite, with six worlds and a cosmetic skin store.
 
